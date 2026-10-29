@@ -1,0 +1,107 @@
+{
+  "environment_name": "AWS-style Data Engineering Test Environment (FICTIONAL TEST DATA)",
+  "cloud_provider": "Simulated AWS-style configuration (no real AWS account, no API calls)",
+  "audit_date": "2026-10-27",
+  "inactive_days_limit": 90,
+  "required_log_retention_days": 365,
+
+  "iam_users": [
+    {
+      "username": "data_analyst",
+      "role": "DataAnalystRole",
+      "is_admin": false,
+      "approved_admin": false,
+      "mfa_enabled": false,
+      "enabled": true,
+      "last_login": "2026-10-24"
+    },
+    {
+      "username": "etl_service",
+      "role": "EtlServiceRole",
+      "is_admin": false,
+      "approved_admin": false,
+      "is_service_account": true,
+      "mfa_enabled": false,
+      "enabled": true,
+      "last_login": "2026-10-27"
+    }
+  ],
+
+  "iam_roles": [
+    {
+      "role_name": "DataAnalystRole",
+      "permissions": [
+        {"actions": ["*"], "resources": ["*"]}
+      ],
+      "break_glass_admin_role": false
+    },
+    {
+      "role_name": "EtlServiceRole",
+      "permissions": [
+        {"actions": ["s3:GetObject"], "resources": ["s3/customer-raw-data/*"]},
+        {"actions": ["s3:PutObject"], "resources": ["s3/processed-data/*"]},
+        {"actions": ["redshift:CopyInto"], "resources": ["redshift/sales-dw/staging"]}
+      ],
+      "break_glass_admin_role": false
+    }
+  ],
+
+  "resources": [
+    {
+      "name": "customer-raw-data",
+      "type": "Object Storage",
+      "service": "Amazon S3 (simulated)",
+      "contains_sensitive_data": true,
+      "data_classification": "Confidential (raw customer records)",
+      "encryption_at_rest": false,
+      "key_type": "none",
+      "encryption_in_transit": false,
+      "public_access": true,
+      "versioning_enabled": false
+    },
+    {
+      "name": "processed-data",
+      "type": "Object Storage",
+      "service": "Amazon S3 (simulated)",
+      "contains_sensitive_data": true,
+      "data_classification": "Confidential (cleaned customer data)",
+      "encryption_at_rest": true,
+      "key_type": "customer-managed",
+      "encryption_in_transit": true,
+      "public_access": false,
+      "versioning_enabled": true
+    },
+    {
+      "name": "sales-dw",
+      "type": "Data Warehouse",
+      "service": "Amazon Redshift (simulated)",
+      "contains_sensitive_data": true,
+      "data_classification": "Confidential (sales and customer data)",
+      "encryption_at_rest": true,
+      "key_type": "customer-managed",
+      "encryption_in_transit": true
+    },
+    {
+      "name": "customer-etl-job",
+      "type": "Data Pipeline",
+      "service": "AWS Glue ETL (simulated)",
+      "contains_sensitive_data": true,
+      "data_classification": "Confidential (moves customer data)",
+      "encryption_at_rest": true,
+      "key_type": "customer-managed",
+      "encryption_in_transit": false
+    }
+  ],
+
+  "logging_monitoring": {
+    "audit_logging_enabled": false,
+    "logs_centralised": false,
+    "log_retention_days": 0,
+    "security_alerts_enabled": false
+  },
+
+  "key_management": {
+    "key_rotation_enabled": true,
+    "rotation_period_days": 365
+  }
+}

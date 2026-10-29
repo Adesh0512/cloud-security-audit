@@ -1,0 +1,154 @@
+{
+  "environment_name": "ShopNova Online Retail - Data Platform (FICTIONAL TEST DATA)",
+  "cloud_provider": "Simulated cloud (no real account)",
+  "audit_date": "2026-10-27",
+  "inactive_days_limit": 90,
+  "required_log_retention_days": 365,
+
+  "iam_users": [
+    {
+      "username": "alice.admin",
+      "role": "PlatformAdmin",
+      "is_admin": true,
+      "approved_admin": true,
+      "mfa_enabled": true,
+      "enabled": true,
+      "last_login": "2026-10-25"
+    },
+    {
+      "username": "bob.dataengineer",
+      "role": "DataEngineer",
+      "is_admin": true,
+      "approved_admin": false,
+      "mfa_enabled": false,
+      "enabled": true,
+      "last_login": "2026-10-20"
+    },
+    {
+      "username": "carol.analyst",
+      "role": "DataAnalyst",
+      "is_admin": false,
+      "approved_admin": false,
+      "mfa_enabled": true,
+      "enabled": true,
+      "last_login": "2026-10-26"
+    },
+    {
+      "username": "dave.contractor",
+      "role": "DataAnalyst",
+      "is_admin": false,
+      "approved_admin": false,
+      "mfa_enabled": false,
+      "enabled": true,
+      "last_login": "2026-03-14"
+    },
+    {
+      "username": "eve.former_intern",
+      "role": "DataEngineer",
+      "is_admin": false,
+      "approved_admin": false,
+      "mfa_enabled": true,
+      "enabled": false,
+      "last_login": "2025-12-01"
+    }
+  ],
+
+  "iam_roles": [
+    {
+      "role_name": "PlatformAdmin",
+      "permissions": [
+        {"actions": ["*"], "resources": ["*"]}
+      ],
+      "break_glass_admin_role": true
+    },
+    {
+      "role_name": "DataEngineer",
+      "permissions": [
+        {"actions": ["storage:*"], "resources": ["*"]},
+        {"actions": ["pipeline:Run", "pipeline:Read"], "resources": ["pipeline/daily-sales-etl"]}
+      ],
+      "break_glass_admin_role": false
+    },
+    {
+      "role_name": "DataAnalyst",
+      "permissions": [
+        {"actions": ["warehouse:Select"], "resources": ["warehouse/analytics_dw/reporting"]}
+      ],
+      "break_glass_admin_role": false
+    },
+    {
+      "role_name": "etl-service-account",
+      "permissions": [
+        {"actions": ["storage:GetObject", "storage:PutObject"], "resources": ["storage/raw-landing-zone/*"]},
+        {"actions": ["warehouse:Insert"], "resources": ["warehouse/analytics_dw/staging"]}
+      ],
+      "break_glass_admin_role": false
+    }
+  ],
+
+  "resources": [
+    {
+      "name": "raw-landing-zone",
+      "type": "Object Storage",
+      "contains_sensitive_data": true,
+      "data_classification": "Confidential (customer PII)",
+      "encryption_at_rest": true,
+      "key_type": "customer-managed",
+      "encryption_in_transit": true,
+      "public_access": false,
+      "versioning_enabled": true
+    },
+    {
+      "name": "marketing-exports",
+      "type": "Object Storage",
+      "contains_sensitive_data": true,
+      "data_classification": "Confidential (customer emails)",
+      "encryption_at_rest": false,
+      "key_type": "none",
+      "encryption_in_transit": true,
+      "public_access": true,
+      "versioning_enabled": false
+    },
+    {
+      "name": "analytics_dw",
+      "type": "Data Warehouse",
+      "contains_sensitive_data": true,
+      "data_classification": "Confidential (sales and customer data)",
+      "encryption_at_rest": true,
+      "key_type": "provider-managed",
+      "encryption_in_transit": true
+    },
+    {
+      "name": "daily-sales-etl",
+      "type": "Data Pipeline",
+      "contains_sensitive_data": true,
+      "data_classification": "Confidential (moves customer data)",
+      "encryption_at_rest": true,
+      "key_type": "customer-managed",
+      "encryption_in_transit": false
+    },
+    {
+      "name": "public-reference-data",
+      "type": "Object Storage",
+      "contains_sensitive_data": false,
+      "data_classification": "Public",
+      "encryption_at_rest": true,
+      "key_type": "provider-managed",
+      "encryption_in_transit": true,
+      "public_access": false,
+      "versioning_enabled": true
+    }
+  ],
+
+  "logging_monitoring": {
+    "audit_logging_enabled": true,
+    "logs_centralised": true,
+    "log_retention_days": 90,
+    "security_alerts_enabled": false
+  },
+
+  "key_management": {
+    "key_rotation_enabled": true,
+    "rotation_period_days": 365
+  }
+}

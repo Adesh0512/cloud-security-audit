@@ -1,0 +1,587 @@
+{
+    "report_generated_at": "2026-10-27T09:02:12",
+    "environment": "ShopNova Online Retail - Data Platform (FICTIONAL TEST DATA)",
+    "audit_date": "2026-10-27",
+    "disclaimer": "Simplified educational assessment on fictional sample data. Not a certification of ISO 27001, CIS or any other standard.",
+    "summary": {
+        "total_checks": 45,
+        "passed": 27,
+        "failed": 18,
+        "high_risk": 11,
+        "medium_risk": 6,
+        "low_risk": 1,
+        "pass_rate_percent": 60.0,
+        "overall_status": "AT RISK - high-risk findings need immediate action"
+    },
+    "findings": [
+        {
+            "category": "Access Control",
+            "check": "Admin privileges are approved",
+            "target": "bob.dataengineer",
+            "status": "FAIL",
+            "severity": "HIGH",
+            "issue": "User has administrator privileges without approval.",
+            "remediation": "Remove admin rights or get formal approval; use least-privilege roles."
+        },
+        {
+            "category": "Access Control",
+            "check": "MFA is enabled",
+            "target": "bob.dataengineer",
+            "status": "FAIL",
+            "severity": "HIGH",
+            "issue": "Active account does not use multi-factor authentication.",
+            "remediation": "Enforce MFA for this user (mandatory for privileged users)."
+        },
+        {
+            "category": "Access Control",
+            "check": "MFA is enabled",
+            "target": "dave.contractor",
+            "status": "FAIL",
+            "severity": "MEDIUM",
+            "issue": "Active account does not use multi-factor authentication.",
+            "remediation": "Enforce MFA for this user (mandatory for privileged users)."
+        },
+        {
+            "category": "Access Control",
+            "check": "No enabled account inactive > 90 days",
+            "target": "dave.contractor",
+            "status": "FAIL",
+            "severity": "MEDIUM",
+            "issue": "Account is enabled but unused for 227 days.",
+            "remediation": "Disable or remove the account; run periodic access reviews."
+        },
+        {
+            "category": "Access Control",
+            "check": "No wildcard (*) permissions",
+            "target": "DataEngineer",
+            "status": "FAIL",
+            "severity": "HIGH",
+            "issue": "Role grants wildcard actions or resources (overly permissive).",
+            "remediation": "Replace '*' with the specific actions and resources the role needs."
+        },
+        {
+            "category": "Encryption",
+            "check": "Encryption at rest enabled",
+            "target": "marketing-exports (Object Storage)",
+            "status": "FAIL",
+            "severity": "HIGH",
+            "issue": "Data is stored without encryption at rest.",
+            "remediation": "Enable encryption at rest (e.g. AES-256) using the cloud KMS."
+        },
+        {
+            "category": "Encryption",
+            "check": "Sensitive data uses customer-managed key",
+            "target": "marketing-exports (Object Storage)",
+            "status": "FAIL",
+            "severity": "MEDIUM",
+            "issue": "Sensitive data uses key type \"none\".",
+            "remediation": "Use a customer-managed KMS key with restricted access and rotation."
+        },
+        {
+            "category": "Encryption",
+            "check": "Sensitive data uses customer-managed key",
+            "target": "analytics_dw (Data Warehouse)",
+            "status": "FAIL",
+            "severity": "MEDIUM",
+            "issue": "Sensitive data uses key type \"provider-managed\".",
+            "remediation": "Use a customer-managed KMS key with restricted access and rotation."
+        },
+        {
+            "category": "Encryption",
+            "check": "Encryption in transit (TLS) enabled",
+            "target": "daily-sales-etl (Data Pipeline)",
+            "status": "FAIL",
+            "severity": "HIGH",
+            "issue": "Data moves between services without TLS.",
+            "remediation": "Enforce TLS 1.2+ on all endpoints and pipeline connections."
+        },
+        {
+            "category": "Compliance",
+            "check": "CTL-01 MFA enforced for all privileged users",
+            "target": "Access control",
+            "status": "FAIL",
+            "severity": "HIGH",
+            "issue": "At least one active admin has no MFA.",
+            "remediation": "Enforce MFA through an organisation-wide policy."
+        },
+        {
+            "category": "Compliance",
+            "check": "CTL-02 Least privilege: no unapproved wildcard roles",
+            "target": "Access control",
+            "status": "FAIL",
+            "severity": "HIGH",
+            "issue": "Some roles use wildcard permissions.",
+            "remediation": "Review and narrow role policies."
+        },
+        {
+            "category": "Compliance",
+            "check": "CTL-03 All sensitive data encrypted at rest",
+            "target": "Encryption",
+            "status": "FAIL",
+            "severity": "HIGH",
+            "issue": "Sensitive data is stored unencrypted.",
+            "remediation": "Enable default encryption on all data stores."
+        },
+        {
+            "category": "Compliance",
+            "check": "CTL-04 TLS enforced for all resources",
+            "target": "Encryption",
+            "status": "FAIL",
+            "severity": "HIGH",
+            "issue": "Some resources allow unencrypted traffic.",
+            "remediation": "Enforce TLS on every endpoint and connection."
+        },
+        {
+            "category": "Compliance",
+            "check": "CTL-07 Log retention >= 365 days",
+            "target": "Logging & monitoring",
+            "status": "FAIL",
+            "severity": "MEDIUM",
+            "issue": "Logs kept only 90 days.",
+            "remediation": "Increase retention to meet the organisation's policy."
+        },
+        {
+            "category": "Compliance",
+            "check": "CTL-08 Security alerts configured",
+            "target": "Logging & monitoring",
+            "status": "FAIL",
+            "severity": "MEDIUM",
+            "issue": "No alerts for suspicious activity.",
+            "remediation": "Configure alerts for root/admin logins, policy changes and public exposure."
+        },
+        {
+            "category": "Compliance",
+            "check": "CTL-09 Public access blocked on all storage",
+            "target": "Secure storage",
+            "status": "FAIL",
+            "severity": "HIGH",
+            "issue": "At least one storage bucket is publicly accessible.",
+            "remediation": "Turn on 'block public access' at account and bucket level."
+        },
+        {
+            "category": "Compliance",
+            "check": "CTL-10 Versioning enabled on all storage (recovery)",
+            "target": "Secure storage",
+            "status": "FAIL",
+            "severity": "LOW",
+            "issue": "Some buckets cannot recover overwritten or deleted objects.",
+            "remediation": "Enable object versioning and lifecycle rules."
+        },
+        {
+            "category": "Secure Storage",
+            "check": "Bucket is not publicly accessible",
+            "target": "marketing-exports",
+            "status": "FAIL",
+            "severity": "HIGH",
+            "issue": "Bucket allows public access; data could be exposed to anyone.",
+            "remediation": "Block public access and review the bucket policy/ACLs."
+        }
+    ],
+    "all_checks": [
+        {
+            "category": "Access Control",
+            "check": "Admin privileges are approved",
+            "target": "alice.admin",
+            "status": "PASS",
+            "severity": "",
+            "issue": "",
+            "remediation": ""
+        },
+        {
+            "category": "Access Control",
+            "check": "MFA is enabled",
+            "target": "alice.admin",
+            "status": "PASS",
+            "severity": "",
+            "issue": "",
+            "remediation": ""
+        },
+        {
+            "category": "Access Control",
+            "check": "No enabled account inactive > 90 days",
+            "target": "alice.admin",
+            "status": "PASS",
+            "severity": "",
+            "issue": "",
+            "remediation": ""
+        },
+        {
+            "category": "Access Control",
+            "check": "Admin privileges are approved",
+            "target": "bob.dataengineer",
+            "status": "FAIL",
+            "severity": "HIGH",
+            "issue": "User has administrator privileges without approval.",
+            "remediation": "Remove admin rights or get formal approval; use least-privilege roles."
+        },
+        {
+            "category": "Access Control",
+            "check": "MFA is enabled",
+            "target": "bob.dataengineer",
+            "status": "FAIL",
+            "severity": "HIGH",
+            "issue": "Active account does not use multi-factor authentication.",
+            "remediation": "Enforce MFA for this user (mandatory for privileged users)."
+        },
+        {
+            "category": "Access Control",
+            "check": "No enabled account inactive > 90 days",
+            "target": "bob.dataengineer",
+            "status": "PASS",
+            "severity": "",
+            "issue": "",
+            "remediation": ""
+        },
+        {
+            "category": "Access Control",
+            "check": "Admin privileges are approved",
+            "target": "carol.analyst",
+            "status": "PASS",
+            "severity": "",
+            "issue": "",
+            "remediation": ""
+        },
+        {
+            "category": "Access Control",
+            "check": "MFA is enabled",
+            "target": "carol.analyst",
+            "status": "PASS",
+            "severity": "",
+            "issue": "",
+            "remediation": ""
+        },
+        {
+            "category": "Access Control",
+            "check": "No enabled account inactive > 90 days",
+            "target": "carol.analyst",
+            "status": "PASS",
+            "severity": "",
+            "issue": "",
+            "remediation": ""
+        },
+        {
+            "category": "Access Control",
+            "check": "Admin privileges are approved",
+            "target": "dave.contractor",
+            "status": "PASS",
+            "severity": "",
+            "issue": "",
+            "remediation": ""
+        },
+        {
+            "category": "Access Control",
+            "check": "MFA is enabled",
+            "target": "dave.contractor",
+            "status": "FAIL",
+            "severity": "MEDIUM",
+            "issue": "Active account does not use multi-factor authentication.",
+            "remediation": "Enforce MFA for this user (mandatory for privileged users)."
+        },
+        {
+            "category": "Access Control",
+            "check": "No enabled account inactive > 90 days",
+            "target": "dave.contractor",
+            "status": "FAIL",
+            "severity": "MEDIUM",
+            "issue": "Account is enabled but unused for 227 days.",
+            "remediation": "Disable or remove the account; run periodic access reviews."
+        },
+        {
+            "category": "Access Control",
+            "check": "Admin privileges are approved",
+            "target": "eve.former_intern",
+            "status": "PASS",
+            "severity": "",
+            "issue": "",
+            "remediation": ""
+        },
+        {
+            "category": "Access Control",
+            "check": "No enabled account inactive > 90 days",
+            "target": "eve.former_intern",
+            "status": "PASS",
+            "severity": "",
+            "issue": "",
+            "remediation": ""
+        },
+        {
+            "category": "Access Control",
+            "check": "No wildcard (*) permissions",
+            "target": "PlatformAdmin",
+            "status": "PASS",
+            "severity": "",
+            "issue": "",
+            "remediation": ""
+        },
+        {
+            "category": "Access Control",
+            "check": "No wildcard (*) permissions",
+            "target": "DataEngineer",
+            "status": "FAIL",
+            "severity": "HIGH",
+            "issue": "Role grants wildcard actions or resources (overly permissive).",
+            "remediation": "Replace '*' with the specific actions and resources the role needs."
+        },
+        {
+            "category": "Access Control",
+            "check": "No wildcard (*) permissions",
+            "target": "DataAnalyst",
+            "status": "PASS",
+            "severity": "",
+            "issue": "",
+            "remediation": ""
+        },
+        {
+            "category": "Access Control",
+            "check": "No wildcard (*) permissions",
+            "target": "etl-service-account",
+            "status": "PASS",
+            "severity": "",
+            "issue": "",
+            "remediation": ""
+        },
+        {
+            "category": "Encryption",
+            "check": "Encryption at rest enabled",
+            "target": "raw-landing-zone (Object Storage)",
+            "status": "PASS",
+            "severity": "",
+            "issue": "",
+            "remediation": ""
+        },
+        {
+            "category": "Encryption",
+            "check": "Encryption in transit (TLS) enabled",
+            "target": "raw-landing-zone (Object Storage)",
+            "status": "PASS",
+            "severity": "",
+            "issue": "",
+            "remediation": ""
+        },
+        {
+            "category": "Encryption",
+            "check": "Sensitive data uses customer-managed key",
+            "target": "raw-landing-zone (Object Storage)",
+            "status": "PASS",
+            "severity": "",
+            "issue": "",
+            "remediation": ""
+        },
+        {
+            "category": "Encryption",
+            "check": "Encryption at rest enabled",
+            "target": "marketing-exports (Object Storage)",
+            "status": "FAIL",
+            "severity": "HIGH",
+            "issue": "Data is stored without encryption at rest.",
+            "remediation": "Enable encryption at rest (e.g. AES-256) using the cloud KMS."
+        },
+        {
+            "category": "Encryption",
+            "check": "Encryption in transit (TLS) enabled",
+            "target": "marketing-exports (Object Storage)",
+            "status": "PASS",
+            "severity": "",
+            "issue": "",
+            "remediation": ""
+        },
+        {
+            "category": "Encryption",
+            "check": "Sensitive data uses customer-managed key",
+            "target": "marketing-exports (Object Storage)",
+            "status": "FAIL",
+            "severity": "MEDIUM",
+            "issue": "Sensitive data uses key type \"none\".",
+            "remediation": "Use a customer-managed KMS key with restricted access and rotation."
+        },
+        {
+            "category": "Encryption",
+            "check": "Encryption at rest enabled",
+            "target": "analytics_dw (Data Warehouse)",
+            "status": "PASS",
+            "severity": "",
+            "issue": "",
+            "remediation": ""
+        },
+        {
+            "category": "Encryption",
+            "check": "Encryption in transit (TLS) enabled",
+            "target": "analytics_dw (Data Warehouse)",
+            "status": "PASS",
+            "severity": "",
+            "issue": "",
+            "remediation": ""
+        },
+        {
+            "category": "Encryption",
+            "check": "Sensitive data uses customer-managed key",
+            "target": "analytics_dw (Data Warehouse)",
+            "status": "FAIL",
+            "severity": "MEDIUM",
+            "issue": "Sensitive data uses key type \"provider-managed\".",
+            "remediation": "Use a customer-managed KMS key with restricted access and rotation."
+        },
+        {
+            "category": "Encryption",
+            "check": "Encryption at rest enabled",
+            "target": "daily-sales-etl (Data Pipeline)",
+            "status": "PASS",
+            "severity": "",
+            "issue": "",
+            "remediation": ""
+        },
+        {
+            "category": "Encryption",
+            "check": "Encryption in transit (TLS) enabled",
+            "target": "daily-sales-etl (Data Pipeline)",
+            "status": "FAIL",
+            "severity": "HIGH",
+            "issue": "Data moves between services without TLS.",
+            "remediation": "Enforce TLS 1.2+ on all endpoints and pipeline connections."
+        },
+        {
+            "category": "Encryption",
+            "check": "Sensitive data uses customer-managed key",
+            "target": "daily-sales-etl (Data Pipeline)",
+            "status": "PASS",
+            "severity": "",
+            "issue": "",
+            "remediation": ""
+        },
+        {
+            "category": "Encryption",
+            "check": "Encryption at rest enabled",
+            "target": "public-reference-data (Object Storage)",
+            "status": "PASS",
+            "severity": "",
+            "issue": "",
+            "remediation": ""
+        },
+        {
+            "category": "Encryption",
+            "check": "Encryption in transit (TLS) enabled",
+            "target": "public-reference-data (Object Storage)",
+            "status": "PASS",
+            "severity": "",
+            "issue": "",
+            "remediation": ""
+        },
+        {
+            "category": "Compliance",
+            "check": "CTL-01 MFA enforced for all privileged users",
+            "target": "Access control",
+            "status": "FAIL",
+            "severity": "HIGH",
+            "issue": "At least one active admin has no MFA.",
+            "remediation": "Enforce MFA through an organisation-wide policy."
+        },
+        {
+            "category": "Compliance",
+            "check": "CTL-02 Least privilege: no unapproved wildcard roles",
+            "target": "Access control",
+            "status": "FAIL",
+            "severity": "HIGH",
+            "issue": "Some roles use wildcard permissions.",
+            "remediation": "Review and narrow role policies."
+        },
+        {
+            "category": "Compliance",
+            "check": "CTL-03 All sensitive data encrypted at rest",
+            "target": "Encryption",
+            "status": "FAIL",
+            "severity": "HIGH",
+            "issue": "Sensitive data is stored unencrypted.",
+            "remediation": "Enable default encryption on all data stores."
+        },
+        {
+            "category": "Compliance",
+            "check": "CTL-04 TLS enforced for all resources",
+            "target": "Encryption",
+            "status": "FAIL",
+            "severity": "HIGH",
+            "issue": "Some resources allow unencrypted traffic.",
+            "remediation": "Enforce TLS on every endpoint and connection."
+        },
+        {
+            "category": "Compliance",
+            "check": "CTL-05 Encryption key rotation enabled",
+            "target": "Encryption",
+            "status": "PASS",
+            "severity": "",
+            "issue": "",
+            "remediation": ""
+        },
+        {
+            "category": "Compliance",
+            "check": "CTL-06 Audit logging enabled and centralised",
+            "target": "Logging & monitoring",
+            "status": "PASS",
+            "severity": "",
+            "issue": "",
+            "remediation": ""
+        },
+        {
+            "category": "Compliance",
+            "check": "CTL-07 Log retention >= 365 days",
+            "target": "Logging & monitoring",
+            "status": "FAIL",
+            "severity": "MEDIUM",
+            "issue": "Logs kept only 90 days.",
+            "remediation": "Increase retention to meet the organisation's policy."
+        },
+        {
+            "category": "Compliance",
+            "check": "CTL-08 Security alerts configured",
+            "target": "Logging & monitoring",
+            "status": "FAIL",
+            "severity": "MEDIUM",
+            "issue": "No alerts for suspicious activity.",
+            "remediation": "Configure alerts for root/admin logins, policy changes and public exposure."
+        },
+        {
+            "category": "Compliance",
+            "check": "CTL-09 Public access blocked on all storage",
+            "target": "Secure storage",
+            "status": "FAIL",
+            "severity": "HIGH",
+            "issue": "At least one storage bucket is publicly accessible.",
+            "remediation": "Turn on 'block public access' at account and bucket level."
+        },
+        {
+            "category": "Compliance",
+            "check": "CTL-10 Versioning enabled on all storage (recovery)",
+            "target": "Secure storage",
+            "status": "FAIL",
+            "severity": "LOW",
+            "issue": "Some buckets cannot recover overwritten or deleted objects.",
+            "remediation": "Enable object versioning and lifecycle rules."
+        },
+        {
+            "category": "Secure Storage",
+            "check": "Bucket is not publicly accessible",
+            "target": "raw-landing-zone",
+            "status": "PASS",
+            "severity": "",
+            "issue": "",
+            "remediation": ""
+        },
+        {
+            "category": "Secure Storage",
+            "check": "Bucket is not publicly accessible",
+            "target": "marketing-exports",
+            "status": "FAIL",
+            "severity": "HIGH",
+            "issue": "Bucket allows public access; data could be exposed to anyone.",
+            "remediation": "Block public access and review the bucket policy/ACLs."
+        },
+        {
+            "category": "Secure Storage",
+            "check": "Bucket is not publicly accessible",
+            "target": "public-reference-data",
+            "status": "PASS",
+            "severity": "",
+            "issue": "",
+            "remediation": ""
+        }
+    ]
+}
